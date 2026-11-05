@@ -80,41 +80,25 @@ export default function App() {
     let frameId = 0;
     let lastTime = performance.now();
 
-    const isSoftwareGl = (() => {
-      const gl = document.createElement('canvas').getContext('webgl2');
-      if (!gl) return true;
-      const ext = gl.getExtension('WEBGL_debug_renderer_info');
-      const param = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
-      const gpu = String(gl.getParameter(param));
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
-      return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
-    })();
-
-    function afterDraw(cb: () => void) {
-      const gl = engine.renderer.getContext() as WebGL2RenderingContext;
-      const sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0);
-      gl.flush();
-      const poll = () => {
-        const status = sync && gl.getSyncParameter(sync, gl.SYNC_STATUS);
-        if (status === gl.UNSIGNALED) {
-          frameId = window.setTimeout(poll, 5);
-        } else {
-          if (sync) gl.deleteSync(sync);
-          frameId = window.setTimeout(cb, 80);
-        }
-      };
-      frameId = window.setTimeout(poll, 5);
-    }
+    // Automatic viewport sizing enforcement for Android WebViews
+    const ensureViewportSize = () => {
+      if (canvasMountRef.current && matchEngineRef.current) {
+        const w = window.innerWidth || canvasMountRef.current.clientWidth || 800;
+        const h = window.innerHeight || canvasMountRef.current.clientHeight || 450;
+        matchEngineRef.current.resize(w, h);
+      }
+    };
+    ensureViewportSize();
+    setTimeout(ensureViewportSize, 100);
+    setTimeout(ensureViewportSize, 500);
 
     let radarTickCount = 0;
-
     const tick = (now: number) => {
       const delta = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
       engine.update(delta);
 
-      // Throttle radar React updates to ~10 fps for silky 60fps rendering
       radarTickCount++;
       if (radarTickCount % 6 === 0) {
         setBallPos({ x: engine.ball.state.x, z: engine.ball.state.z });
@@ -132,11 +116,7 @@ export default function App() {
         }
       }
 
-      if (isSoftwareGl) {
-        afterDraw(() => tick(performance.now()));
-      } else {
-        frameId = requestAnimationFrame(tick);
-      }
+      frameId = requestAnimationFrame(tick);
     };
 
     frameId = requestAnimationFrame(tick);

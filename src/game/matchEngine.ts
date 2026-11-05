@@ -91,27 +91,24 @@ export class FootballMatchEngine {
     this.scene.background = new THREE.Color(0x0a1220);
     this.scene.fog = new THREE.FogExp2(0x0a1220, 0.0075);
 
-    // 2. Camera
-    this.camera = new THREE.PerspectiveCamera(
-      48,
-      container.clientWidth / container.clientHeight,
-      0.5,
-      350
-    );
+    // 2. Camera - robust viewport fallback for Android WebViews
+    const vw = container.clientWidth || window.innerWidth || 800;
+    const vh = container.clientHeight || window.innerHeight || 450;
+    this.camera = new THREE.PerspectiveCamera(48, vw / vh, 0.5, 350);
     this.camera.position.set(0, 24, -42);
 
-    // 3. Renderer
+    // 3. Renderer - Robust mobile viewport fallback
     this.renderer = new THREE.WebGLRenderer({
-      antialias: !isSoftwareGl,
+      antialias: true,
       powerPreference: 'high-performance',
+      precision: 'mediump',
+      stencil: false,
     });
-    this.renderer.setSize(container.clientWidth, container.clientHeight);
+    this.renderer.setSize(vw, vh);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.15;
-    this.renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
-    this.renderer.shadowMap.enabled = !isSoftwareGl;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.BasicShadowMap;
 
     container.appendChild(this.renderer.domElement);
 
