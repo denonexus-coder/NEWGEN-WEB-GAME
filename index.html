@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>NEWGEN NEWS EGOISTS - 3D Football Simulation</title>
+    <meta name="description" content="Playable 3D football match between NEWGEN and NEWEGOISTS with full 11v11 physics, tactical AI, virtual Android touch controls, dynamic camera, and stadium environment." />
+    <meta property="og:title" content="NEWGEN NEWS EGOISTS - 3D Football Simulation" />
+    <meta property="og:description" content="Playable 3D football match between NEWGEN and NEWEGOISTS with full 11v11 physics, tactical AI, virtual Android touch controls, dynamic camera, and stadium environment." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0a192f" />
+    <style>
+      /* Ensure no pull-to-refresh or bounce gestures interrupt game touches */
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: none;
+        background-color: #050b14;
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

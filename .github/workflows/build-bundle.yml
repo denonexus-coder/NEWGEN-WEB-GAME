@@ -1,0 +1,46 @@
+name: Build Static Game Bundle
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install --legacy-peer-deps
+
+      - name: Build Web Game Dist with Vite
+        run: |
+          npm run build
+
+      - name: Verify dist files
+        run: |
+          ls -la dist/
+          test -f dist/index.html
+
+      - name: Create game.zip bundle
+        run: |
+          cd dist && zip -r ../game.zip ./*
+
+      - name: Upload Game Bundle Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEWGEN-GAME-BUNDLE
+          path: game.zip
+          retention-days: 14
