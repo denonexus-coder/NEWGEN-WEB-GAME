@@ -118,7 +118,16 @@ export default function LauncherApp() {
   }
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-[#050b14] text-slate-200">
+    <div
+      className="flex h-full w-full overflow-hidden bg-[#050b14] text-slate-200"
+      style={{
+        // safe-area: conteúdo do launcher nunca sob o recorte/barra de gestos
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        paddingLeft: 'env(safe-area-inset-left, 0px)',
+        paddingRight: 'env(safe-area-inset-right, 0px)',
+      }}
+    >
       {/* input de importação (offline: arquivos do próprio aparelho) */}
       <input
         ref={fileRef}

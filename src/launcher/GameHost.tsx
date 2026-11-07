@@ -141,11 +141,28 @@ export function GameHost({ entry, settings, onExit }: Props) {
   }, [settings.showFps, state]);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-50 bg-black">
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-50 bg-black"
+      style={{
+        // safe-area: recorte (notch) e barra de gestos — o iframe (em fluxo)
+        // herda esse respiro e o jogo nunca fica escondido atrás do recorte
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        paddingLeft: 'env(safe-area-inset-left, 0px)',
+        paddingRight: 'env(safe-area-inset-right, 0px)',
+      }}
+    >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" />
 
       {state === 'ready' && settings.showFps && fps > 0 && (
-        <div className="pointer-events-none absolute right-3 top-3 z-10 rounded-md bg-black/60 px-2 py-1 font-mono text-xs text-green-400">
+        <div
+          className="pointer-events-none absolute z-10 rounded-md bg-black/60 px-2 py-1 font-mono text-xs text-green-400"
+          style={{
+            right: 'calc(env(safe-area-inset-right, 0px) + 12px)',
+            top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+          }}
+        >
           {fps} FPS
         </div>
       )}
@@ -153,7 +170,11 @@ export function GameHost({ entry, settings, onExit }: Props) {
       {state === 'ready' && !paused && (
         <button
           onClick={togglePause}
-          className="absolute left-3 top-3 z-10 flex items-center gap-2 rounded-lg bg-black/50 px-3 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/70"
+          className="absolute z-10 flex items-center gap-2 rounded-lg bg-black/50 px-3 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/70"
+          style={{
+            left: 'calc(env(safe-area-inset-left, 0px) + 12px)',
+            top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+          }}
         >
           <Pause size={15} /> Pausar
         </button>

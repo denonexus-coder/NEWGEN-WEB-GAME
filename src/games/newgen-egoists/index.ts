@@ -23,8 +23,10 @@ const game: GameModule = {
     const frame = document.createElement('iframe');
     frame.title = 'NEWGEN · NEWEGOISTS';
     frame.src = new URL('games/newgen-egoists/index.html', document.baseURI).href;
+    // position:relative (em fluxo) = ocupa a CAIXA DE CONTEÚDO do container,
+    // que já respeita os safe-areas — notch/lateral nunca cobrem os controles.
     frame.style.cssText =
-      'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:0;background:#0a1220;';
+      'position:relative;display:block;width:100%;height:100%;border:0;z-index:0;background:#0a1220;';
     (ctx.canvas.parentElement ?? document.body).appendChild(frame);
 
     return {

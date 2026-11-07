@@ -60,3 +60,11 @@ Selecione os arquivos juntos no seletor (ou apenas o `.js`).
 - Nenhuma fonte/CDN/ API externa é usada — tudo é bundleado na build.
 - `base: './'` no Vite garante que o WebView carregue de `file://`/local.
 - Jogos importados usam blob URLs locais — nada sai do aparelho.
+
+## Notas de orientação (landscape)
+
+- O app é **travado em `sensorLandscape`** (paisagem, girando nos dois sentidos)
+  direto no `AndroidManifest.xml`, aplicado por step no CI antes do Gradle —
+  sem plugin, sem código de runtime.
+- O launcher e o GameHost respeitam `env(safe-area-inset-*)`: recorte (notch) e
+  barra de gestos nunca cobrem botões nem controles do jogo.
