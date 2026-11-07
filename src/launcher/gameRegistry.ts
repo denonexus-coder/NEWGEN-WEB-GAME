@@ -47,7 +47,17 @@ export class GameRegistry {
           continue;
         }
         const g = mod.default;
-        found.push({ ...metaFrom(g, path), source: 'builtin', load: loader as () => Promise<GameModule> });
+        found.push({
+          ...metaFrom(g, path),
+          source: 'builtin',
+          // IMPORTANTE: import dinâmico devolve { default }, não o GameModule.
+          // Normalizamos aqui para o contrato load(): Promise<GameModule>.
+          load: async () => {
+            const m = (await loader()) as { default?: unknown };
+            if (!isValidModule(m.default)) throw new Error(`Jogo inválido: ${path}`);
+            return m.default;
+          },
+        });
       } catch (err) {
         console.error(`[registry] falha ao carregar ${path}:`, err);
       }

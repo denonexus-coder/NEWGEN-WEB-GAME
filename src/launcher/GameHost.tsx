@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AlertTriangle, ArrowLeft, Pause, Play } from 'lucide-react';
 import { createEngine } from '../engine';
-import type { EngineHandle, EngineSettings, GameHandle } from '../engine/types';
+import type { EngineHandle, EngineSettings, GameHandle, GameModule } from '../engine/types';
 import type { GameEntry } from './gameRegistry';
 
 interface Props {
@@ -50,10 +50,18 @@ export function GameHost({ entry, settings, onExit }: Props) {
         });
         resizeObserver.observe(container);
 
-        const mod = await entry.load();
+        const loaded: unknown = await entry.load();
         if (cancelled) {
           engine.dispose();
           return;
+        }
+        // Tolera ambos os formatos: GameModule direto ou namespace { default }
+        const mod =
+          loaded && typeof (loaded as GameModule).mount === 'function'
+            ? (loaded as GameModule)
+            : ((loaded as { default?: GameModule }).default ?? null);
+        if (!mod || typeof mod.mount !== 'function') {
+          throw new Error(`"${entry.name}" não exporta mount() válido`);
         }
         const handle = await mod.mount(engine.ctx);
         if (cancelled) {
