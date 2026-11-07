@@ -136,8 +136,8 @@ export function GameHost({ entry, settings, onExit }: Props) {
     <div ref={containerRef} className="fixed inset-0 z-50 bg-black">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" />
 
-      {state === 'ready' && settings.showFps && (
-        <div className="pointer-events-none absolute right-3 top-3 rounded-md bg-black/60 px-2 py-1 font-mono text-xs text-green-400">
+      {state === 'ready' && settings.showFps && fps > 0 && (
+        <div className="pointer-events-none absolute right-3 top-3 z-10 rounded-md bg-black/60 px-2 py-1 font-mono text-xs text-green-400">
           {fps} FPS
         </div>
       )}
@@ -145,14 +145,14 @@ export function GameHost({ entry, settings, onExit }: Props) {
       {state === 'ready' && !paused && (
         <button
           onClick={togglePause}
-          className="absolute left-3 top-3 flex items-center gap-2 rounded-lg bg-black/50 px-3 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/70"
+          className="absolute left-3 top-3 z-10 flex items-center gap-2 rounded-lg bg-black/50 px-3 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/70"
         >
           <Pause size={15} /> Pausar
         </button>
       )}
 
       {state === 'loading' && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-black">
           <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-cyan-400" />
           <p className="text-sm text-slate-400">
             Carregando <span className="font-semibold text-white">{entry.name}</span>…
@@ -161,7 +161,7 @@ export function GameHost({ entry, settings, onExit }: Props) {
       )}
 
       {state === 'error' && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black px-6 text-center">
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black px-6 text-center">
           <AlertTriangle size={42} className="text-red-400" />
           <h2 className="text-lg font-bold text-white">Não foi possível iniciar o jogo</h2>
           <p className="max-w-md break-words text-sm text-slate-400">{error}</p>
