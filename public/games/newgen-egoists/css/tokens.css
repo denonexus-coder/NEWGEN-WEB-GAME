@@ -1,0 +1,39 @@
+/* ============ NEWGEN MatchDay · Design Tokens ============ */
+:root{
+  --bg:#050b14; --bg2:#070f1d;
+  --panel:#0a192f; --panel2:#0e2140; --panel3:#12294d;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.16);
+  --fg:#e6edf7; --mu:#8fa3c8; --dim:#5b6b8c;
+  --ac:#22d3ee; --ac2:#8b5cf6; --ac-ink:#04141a;
+  --live:#ff3b5c; --win:#22e08a; --draw:#94a3b8; --loss:#f87171; --gold:#ffb020;
+  --r:16px; --r2:12px; --r3:999px;
+  --ease:cubic-bezier(.2,.8,.2,1); --dur:.18s;
+  --sat:env(safe-area-inset-top,0px);
+  --sab:env(safe-area-inset-bottom,0px);
+  --sal:env(safe-area-inset-left,0px);
+  --sar:env(safe-area-inset-right,0px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
+  font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+h1,h2,h3{margin:0;letter-spacing:-.02em;font-weight:900}
+p{margin:6px 0;color:var(--mu);line-height:1.45}
+b,strong{font-weight:800}
+.num,.cd,time{font-variant-numeric:tabular-nums}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:#ffffff26;border-radius:3px}
+::-webkit-scrollbar-track{background:transparent}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+@keyframes blink{50%{opacity:.5}}
+@keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes slidein{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes slideout{to{opacity:0;transform:translateX(24px)}}
+@keyframes shimmer{to{background-position:200% 0}}

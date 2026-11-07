@@ -133,6 +133,25 @@ export function GameHost({ entry, settings, onExit }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, [togglePause]);
 
+  // Pausa bidirecional com o jogo (iframe → launcher): quando o jogo abre o
+  // seu próprio menu de pausa (botão ⏸ ou ESC lá dentro), o overlay do
+  // launcher acompanha — e quando o jogo retoma, o overlay sai.
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      const d = e.data as { ng?: string } | null;
+      if (!d || typeof d !== 'object') return;
+      if (d.ng === 'paused') {
+        setPaused(true);
+        engineRef.current?.ctx.loop.pause();
+      } else if (d.ng === 'resumed') {
+        setPaused(false);
+        engineRef.current?.ctx.loop.resume();
+      }
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
   // contador de FPS
   useEffect(() => {
     if (!settings.showFps || state !== 'ready') return;
