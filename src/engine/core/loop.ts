@@ -18,7 +18,7 @@ export class GameLoop {
 
   private rafId = 0;
   private lastTime = 0;
-  private running = false;
+  private _running = false;
   private _paused = false;
   private fpsAccum = 0;
   private fpsFrames = 0;
@@ -28,18 +28,18 @@ export class GameLoop {
   }
 
   get running(): boolean {
-    return this.running;
+    return this._running;
   }
 
   start(): void {
-    if (this.running) return;
-    this.running = true;
+    if (this._running) return;
+    this._running = true;
     this.lastTime = performance.now();
     this.rafId = requestAnimationFrame(this.tick);
   }
 
   stop(): void {
-    this.running = false;
+    this._running = false;
     if (this.rafId) cancelAnimationFrame(this.rafId);
     this.rafId = 0;
   }

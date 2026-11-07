@@ -3,7 +3,7 @@ export type AudioBus = 'master' | 'music' | 'sfx';
 export interface SoundHandle {
   stop(): void;
   setVolume(v: number): void;
-  readonly playing: boolean;
+  playing: boolean;
 }
 
 export interface PlayOptions {
