@@ -68,3 +68,42 @@ Selecione os arquivos juntos no seletor (ou apenas o `.js`).
   sem plugin, sem código de runtime.
 - O launcher e o GameHost respeitam `env(safe-area-inset-*)`: recorte (notch) e
   barra de gestos nunca cobrem botões nem controles do jogo.
+
+## 🎮 NEWGEN · NEWEGOISTS (jogo embutido)
+
+O jogo clássico (futebol 3D + gestão mundial) corre dentro de um iframe
+apontando para `public/games/newgen-egoists/` — 10 módulos `<script>` + 3 CSS,
+Three.js r128 local (`public/vendor/three.min.js`), **100% offline**.
+Save em `localStorage` chave `ngne2` (mesma origem iframe ↔ launcher).
+
+### Regras da competição (v1.3)
+
+| # | Regra |
+|---|---|
+| R1 | **Sem botões de velocidade** — tudo corre a tempo real (1×). |
+| R2 | Sair de uma partida **congela-a**; re-entra retoma do **snapshot exato** (inclusive depois de matar a app). |
+| R3 | App em background → **tudo congela** (`visibilitychange` guarda e pausa). |
+| R4/R5 | A minha partida só tem **Jogar** (nunca "Assistir") — não corre sem mim. |
+| R6/R7 | Falta ao kickoff → notificação + **1 dia de prazo** → **forfeit 0–3** + multa `max(150, 10% do caixa)` + OVR −1 + entrada no diário. |
+| R8 | Partidas que nunca vi seguem o calendário e **produzem resultado** sozinhas no fim da janela. |
+| R9 | Rodada completa → **nova rodada** agendada automaticamente. |
+| R10 | Kickoffs escalonados **T+0/5/10/15 min**. |
+
+### Arquitetura dos módulos (`public/games/newgen-egoists/js/`)
+
+```
+00-names    nomes únicos globais + treinadores     50-sim    simulação (lógica original intacta)
+10-world    constantes, equipas, save, migração    60-evolve evolução, época, quick, forfeit
+20-calendar datas, janelas, estados, formatos      70-3d     Three.js: cena, personagens, câmara
+30-clock    relógio do mundo (prazos/auto-sim)     80-controls joystick + teclado
+40-match    entrar/congelar/retomar/snapshots      90-ui     menus, HUD, pausa, modais, loop
+```
+
+A ordem dos `<script>` no `index.html` é a dependência; referências cruzadas
+entre ficheiros só podem ser resolvidas em tempo de execução.
+
+### Ponte jogo ↔ launcher
+
+- `postMessage {ng:'pause'|'resume'}` (ESC/⏸ no jogo) ↔ overlay do GameHost;
+- `window.ngSaveNow()` chamado pelo adapter **sincronamente** em `dispose()`
+  antes de remover o iframe (guarda snapshot + save, congela a partida).
