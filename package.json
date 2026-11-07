@@ -7,8 +7,12 @@
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "clean": "rm -rf dist server.js android",
+    "lint": "tsc --noEmit",
+    "apk:init": "cap add android",
+    "apk:sync": "npm run build && cap sync android",
+    "apk:open": "cap open android",
+    "apk:build": "npm run apk:sync && cd android && ./gradlew assembleDebug"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -25,6 +29,9 @@
     "vite": "^8.3.0"
   },
   "devDependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
     "@types/node": "^22.14.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

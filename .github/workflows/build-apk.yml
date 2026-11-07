@@ -1,0 +1,68 @@
+name: Build APK (NewGen Launcher)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Build web bundle (Vite)
+        run: npm run build
+
+      - name: Verify dist files
+        run: |
+          ls -la dist/
+          test -f dist/index.html
+
+      - name: Setup Java 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Create Capacitor Android project
+        run: npx cap add android || true
+
+      - name: Sync web assets into Android project
+        run: npx cap sync android
+
+      - name: Build debug APK (Gradle)
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Verify APK
+        run: ls -la android/app/build/outputs/apk/debug/
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEWGEN-LAUNCHER-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
