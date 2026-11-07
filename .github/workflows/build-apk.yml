@@ -36,11 +36,11 @@ jobs:
           ls -la dist/
           test -f dist/index.html
 
-      - name: Setup Java 17 (Temurin)
+      - name: Setup Java 21 (Temurin)
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
       # O runner ubuntu-latest já traz o Android SDK pré-instalado
       # (ANDROID_HOME=/usr/local/lib/android/sdk) — nenhum setup extra necessário.
