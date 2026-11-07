@@ -57,6 +57,14 @@ const ball=new THREE.Mesh(new THREE.IcosahedronGeometry(.3,1),new THREE.MeshLamb
 const bsd=new THREE.Mesh(new THREE.CircleGeometry(.3,10),new THREE.MeshBasicMaterial({color:0,transparent:true,opacity:.4}));bsd.rotation.x=-Math.PI/2;sc.add(bsd);
 const TR=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.55})),trp=[...Array(18)].map(()=>new THREE.Vector3());TR.frustumCulled=false;sc.add(TR);
 const mark=new THREE.Mesh(new THREE.ConeGeometry(.25,.5,8),new THREE.MeshBasicMaterial({color:0xffe600}));mark.rotation.x=Math.PI;sc.add(mark);
+/* balizas 3D visíveis em cada extremidade */
+const goalMat=new THREE.MeshLambertMaterial({color:0xffffff});
+const post=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,2.44,8),goalMat);
+const bar=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,2*GW+.28,8),goalMat);bar.rotation.z=Math.PI/2;
+[-1,1].forEach(s=>{[-GW,GW].forEach(z=>{const p=post.clone();p.position.set(s*HX,1.22,z);sc.add(p)});
+const b=bar.clone();b.position.set(s*HX,2.44,0);sc.add(b);
+const net=new THREE.Mesh(new THREE.PlaneGeometry(2*GW+.56,2.44),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.12}));
+net.position.set(s*HX,1.22,0);net.rotation.y=s?0:Math.PI;sc.add(net)});
 function rs(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}addEventListener('resize',rs);rs();
 let cx=0,cz=0;
 function anim(S,dt){const B=S.ball;{const bp=trp[0],bs0=Math.hypot(B.vx,B.vz);if(Math.hypot(bp.x-B.x,bp.z-B.z)>4)trp.forEach(v=>v.set(B.x,B.y,B.z));trp.pop();trp.unshift(new THREE.Vector3(B.x,B.y,B.z));TR.geometry.setFromPoints(trp);TR.visible=bs0>11||B.y>1.5}{const dx=B.x*.85-RF.position.x,dz=cl(B.z+7,-HZ,HZ)-RF.position.z,sp=Math.hypot(dx,dz),k=Math.min(1,3*dt),u=RF.u;RF.position.x+=dx*k;RF.position.z+=dz*k;RF.rotation.y=-Math.atan2(B.z-RF.position.z,B.x-RF.position.x);RF.ph+=Math.min(sp,6)*dt*1.5;const w=Math.sin(RF.ph)*.8*Math.min(1,sp/3);u.legs[0].rotation.z=w;u.legs[1].rotation.z=-w;u.arms[0].rotation.z=-w*.7;u.arms[1].rotation.z=w*.7;u.knees[0].rotation.z=-Math.max(0,w)*.8;u.knees[1].rotation.z=-Math.max(0,-w)*.8;u.elb[0].rotation.z=u.elb[1].rotation.z=.5}S.P.forEach((p,i)=>{const g=PM[i],u=g.u,v=Math.hypot(p.vx,p.vz),k=Math.min(1,v/6);if(g.pn!==p.pl){g.pn=p.pl;if(g.label)setLab(g,p.pl.n.split(' ')[1].toUpperCase().slice(0,8),p.pl.no)}g.ph+=v*dt*1.5;const w=Math.sin(g.ph),dsh=p.dash>0,A=(dsh?1.25:.95)*k;
