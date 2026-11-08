@@ -10,7 +10,7 @@
  *   timeScale 20 = 20× (partida em ~4.5s)
  *   timeScale 1000 = MAX (cap: 1000 ticks/run → ~5.4s p/ 90')
  */
-import { GameServer } from "../server-core";
+import { GameServer, listTeamInfo } from "../server-core";
 import {
   LOGIC_DT,
   PROTOCOL_VERSION,
@@ -84,6 +84,10 @@ function handleCommand(cmd: Command): void {
   switch (cmd.type) {
     case "init": {
       initServer(cmd);
+      break;
+    }
+    case "listTeams": {
+      post({ kind: "teams", teams: listTeamInfo() });
       break;
     }
     case "pause":

@@ -104,6 +104,7 @@ export interface MatchSummary {
 
 export type MsgOut =
   | { kind: "ready"; protocol: number; teams: TeamInfo[] }
+  | { kind: "teams"; teams: TeamInfo[] }
   | { kind: "snapshot"; snap: Snapshot }
   | { kind: "stats"; stats: MatchStats }
   | { kind: "events"; events: GameEvent[] }
@@ -128,6 +129,7 @@ export interface InitCommand {
 
 export type Command =
   | InitCommand
+  | { type: "listTeams" }
   | { type: "pause" }
   | { type: "resume" }
   | { type: "speed"; timeScale: number }

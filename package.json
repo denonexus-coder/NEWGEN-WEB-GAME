@@ -13,6 +13,7 @@
     "server:build": "tsc -p tsconfig.server.json && node scripts/write-cjs-flag.mjs",
     "server:match": "npm run server:build && node dist-server/server/host/node-host.js",
     "test:server": "npm run server:build && node --test dist-server/server/__tests__/",
+    "smoke:worker": "node scripts/smoke-worker.mjs",
     "apk:init": "cap add android",
     "apk:sync": "npm run build && cap sync android",
     "apk:open": "cap open android",

@@ -76,6 +76,18 @@ export interface StepResult {
 
 // ---------------------------------------------------------------- servidor
 
+/** Info de todas as equipas disponíveis (para o menu) — sem instanciar partida */
+export function listTeamInfo(): TeamInfo[] {
+  return createTournamentTeams().map((p) => ({
+    id: p.id,
+    name: p.name,
+    short: p.short,
+    style: p.style,
+    formation: p.formation.name,
+    colors: PALETTES[p.id] ?? PALETTES[1],
+  }));
+}
+
 export class GameServer {
   readonly homeId: number;
   readonly awayId: number;
@@ -108,18 +120,8 @@ export class GameServer {
 
   /** Info das equipas para o handshake (pode chamar-se antes de start) */
   getTeams(): TeamInfo[] {
-    const all = this.profiles.length ? this.profiles : createTournamentTeams();
-    return [this.homeId, this.awayId].map((id) => {
-      const p = all.find((t) => t.id === id) ?? all[0];
-      return {
-        id: p.id,
-        name: p.name,
-        short: p.short,
-        style: p.style,
-        formation: p.formation.name,
-        colors: PALETTES[p.id] ?? PALETTES[1],
-      };
-    });
+    const all = listTeamInfo();
+    return [this.homeId, this.awayId].map((id) => all.find((t) => t.id === id) ?? all[0]);
   }
 
   /** Cria equipas/engines e o gerador da partida (instala RNG com seed) */
