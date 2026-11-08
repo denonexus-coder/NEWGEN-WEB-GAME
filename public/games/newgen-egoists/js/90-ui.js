@@ -488,6 +488,7 @@ function frame(t){
 function boot(){
   migrateWorld();
   menu();
+  const load=document.getElementById('load');if(load)load.style.display='none';
   requestAnimationFrame(frame);
 }
 boot();

@@ -33,7 +33,7 @@ const game: GameModule = {
     // position:relative (em fluxo) = ocupa a CAIXA DE CONTEÚDO do container,
     // que já respeita os safe-areas — notch/lateral nunca cobrem os controles.
     frame.style.cssText =
-      'position:relative;display:block;width:100%;height:100%;border:0;z-index:0;background:#050b14;';
+      'position:relative;display:block;width:100%;height:100%;border:0;z-index:50;background:#050b14;';
     (ctx.canvas.parentElement ?? document.body).appendChild(frame);
 
     // Espera o iframe carregar antes de reportar ready — evita ecrã negro
