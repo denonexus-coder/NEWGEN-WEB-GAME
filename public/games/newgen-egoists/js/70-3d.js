@@ -80,8 +80,11 @@ const lp=(o,t)=>{o.rotation.z+=(t-o.rotation.z)*Math.min(1,22*dt)};lp(u.legs[0],
 }
 /* ---------- desenho ---------- */
 function draw(dt){if(!S){const t=performance.now()/4000;cam.position.set(Math.sin(t)*40,22,Math.cos(t)*40);cam.lookAt(0,0,0);return}
+try{
 const B=S.ball,asp=cam.aspect,h=asp<1.2?38:23,zz=asp<1.2?52:33;
-S.P.forEach((p,i)=>{const g=PM[i],sp=Math.hypot(p.vx,p.vz),ph=S.t*sp*1.3;g.position.set(p.x,S.pause>0&&S.gs==p.s?Math.abs(Math.sin(performance.now()/110+i))*.5:0,p.z);g.rotation.y=-p.a;g.u.legs[0].rotation.z=Math.sin(ph)*.9*Math.min(1,sp/5);g.u.legs[1].rotation.z=-Math.sin(ph)*.9*Math.min(1,sp/5);g.u.b.rotation.z=-Math.min(.3,sp*.03)})
+S.P.forEach((p,i)=>{const g=PM[i];if(!g)return;const sp=Math.hypot(p.vx,p.vz),ph=S.t*sp*1.3;g.position.set(p.x,S.pause>0&&S.gs==p.s?Math.abs(Math.sin(performance.now()/110+i))*.5:0,p.z);g.rotation.y=-p.a;g.u.legs[0].rotation.z=Math.sin(ph)*.9*Math.min(1,sp/5);g.u.legs[1].rotation.z=-Math.sin(ph)*.9*Math.min(1,sp/5);g.u.b.rotation.z=-Math.min(.3,sp*.03)})
 anim(S,dt);ball.position.set(B.x,B.y,B.z);ball.rotation.z-=B.vx*dt*3;ball.rotation.x+=B.vz*dt*3;bsd.position.set(B.x,.04,B.z);bsd.scale.setScalar(Math.max(.4,1-B.y*.25));
 if(S.hu&&S.cp>=0&&!S.over){const p=S.P[S.cp];mark.visible=true;mark.position.set(p.x,2.5+Math.sin(performance.now()/180)*.15,p.z)}else mark.visible=false;
 cx+=(B.x*.8-cx)*Math.min(1,3*dt);cz+=(B.z*.3-cz)*Math.min(1,3*dt);cam.position.set(cx,h,zz+cz*.2);cam.lookAt(cx,0,cz)}
+catch(e){console.error('[draw] '+e)}
+}

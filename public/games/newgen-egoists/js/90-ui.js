@@ -464,7 +464,7 @@ function frame(t){
         keys();
         if(charging)chg=Math.min(1,chg+dt*1.3);
         acc+=dt;let n=0;
-        while(acc>=1/60&&n<24){acc-=1/60;step(S,1/60)}
+        while(acc>=1/60&&n<24){acc-=1/60;try{step(S,1/60)}catch(e){console.error('[step] '+e)}}
         if(S.over)endM();
       }
       if(S.fin)S.rv=null;
@@ -473,9 +473,9 @@ function frame(t){
         if(!S.rpOn){S.rpOn=1;toast('⏪ REPLAY')}
         S.rv={...S,P:rp.p,ball:rp.b,pause:0,gs:-1,hu:0,owner:-1};
       }else S.rv=null;
-      const S0=S;if(S&&S.rv)S=S.rv;draw(dt);S=S0;
-      if(NG.hudOn)hud();
-      R.render(sc,cam);
+      const S0=S;if(S&&S.rv)S=S.rv;try{draw(dt)}catch(e){console.error('[draw] '+e)}S=S0;
+      if(NG.hudOn)try{hud()}catch(e){console.error('[hud] '+e)}
+      try{R.render(sc,cam)}catch(e){console.error('[render] '+e)}
       if(t-(frame.snap||0)>8000){frame.snap=t;saveSnap()}
     }
   }else if(!NG.paused){
