@@ -17,10 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
+      - name: Setup Node.js 26
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # jsdom31 (smoke:game) exige ^22.22.2 || ^24.15.0 || >=26.0.0 —
+          # 26 = a mesma versão usada nos testes locais (zlib zstd etc.)
+          node-version: 26
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
