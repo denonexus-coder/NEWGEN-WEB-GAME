@@ -22,7 +22,7 @@ const game: GameModule = {
   version: '2.0.0',
   author: 'NEWGEN',
 
-  mount(ctx) {
+  async mount(ctx) {
     // Este jogo não usa a engine 3D do launcher: para o loop para não
     // consumir CPU/GPU atrás do iframe.
     ctx.loop.stop();
@@ -35,6 +35,14 @@ const game: GameModule = {
     frame.style.cssText =
       'position:relative;display:block;width:100%;height:100%;border:0;z-index:0;background:#050b14;';
     (ctx.canvas.parentElement ?? document.body).appendChild(frame);
+
+    // Espera o iframe carregar antes de reportar ready — evita ecrã negro
+    // enquanto o Three.js e o jogo ainda não inicializaram dentro do WebView.
+    await new Promise<void>((resolve, reject) => {
+      frame.onload = () => resolve();
+      frame.onerror = () => reject(new Error('iframe falhou ao carregar'));
+      setTimeout(() => reject(new Error('iframe timeout')), 10000);
+    });
 
     const post = (ng: string) => {
       try {
@@ -52,6 +60,8 @@ const game: GameModule = {
         post('resume');
       },
       dispose() {
+        // reinicia o loop do launcher para o canvas ficar visível de novo
+        try { ctx.loop.resume(); } catch { /* best-effort */ }
         // guarda imediatamente: snapshot da partida em curso + save no localStorage
         // (mesma origem) — nada se perde ao sair para o launcher
         try {
