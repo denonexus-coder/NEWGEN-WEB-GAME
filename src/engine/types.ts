@@ -69,6 +69,12 @@ export interface GameModule {
   author?: string;
   /** url ou data-uri (opcional) */
   thumbnail?: string;
+  /**
+   * Escondido do menu do launcher: o módulo continua empacotado (dependências,
+   * Web Workers etc. mantêm-se no build) mas não aparece na lista de jogos.
+   * Ex.: Football AI em espera enquanto o NEWGEN·NEWEGOISTS é o jogo principal.
+   */
+  hidden?: boolean;
   mount(ctx: EngineContext): Promise<GameHandle> | GameHandle;
 }
 

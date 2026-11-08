@@ -14,6 +14,8 @@
     "server:match": "npm run server:build && node dist-server/server/host/node-host.js",
     "test:server": "npm run server:build && node --test dist-server/server/__tests__/",
     "smoke:worker": "node scripts/smoke-worker.mjs",
+    "smoke:game": "node scripts/smoke-egoists.mjs",
+    "build:game": "node scripts/build-game-html.mjs",
     "apk:init": "cap add android",
     "apk:sync": "npm run build && cap sync android",
     "apk:open": "cap open android",
@@ -43,6 +45,7 @@
     "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.28.2",
+    "jsdom": "^31.0.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.21.0",
     "typescript": "7.1.0-beta"

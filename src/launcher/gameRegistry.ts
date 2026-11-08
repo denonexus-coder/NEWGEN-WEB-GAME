@@ -47,6 +47,12 @@ export class GameRegistry {
           continue;
         }
         const g = mod.default;
+        if (g.hidden) {
+          // hidden: fora do menu, mas o módulo continua no bundle
+          // (import.meta.glob gera o chunk dinâmico → Workers seguem empacotados)
+          console.info(`[registry] ${path} oculto do menu (hidden) — bundle mantido`);
+          continue;
+        }
         found.push({
           ...metaFrom(g, path),
           source: 'builtin',

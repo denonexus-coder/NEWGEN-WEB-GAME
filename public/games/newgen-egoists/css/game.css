@@ -1,0 +1,67 @@
+/* ============ NEWGEN MatchDay · Jogo (HUD, controlos, pausa) ============ */
+
+/* ---------- placar TV ---------- */
+#sb{position:fixed;top:calc(var(--sat) + 8px);left:0;right:0;z-index:20;
+  display:none;align-items:center;justify-content:center;gap:10px;pointer-events:none;
+  padding:0 calc(var(--sar) + 10px) 0 calc(var(--sal) + 10px)}
+.hp{pointer-events:auto;background:#040a14e6;border:1px solid #ffffff26;color:#fff;
+  width:38px;height:38px;border-radius:12px;font-size:15px;cursor:pointer;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform var(--dur) var(--ease),background var(--dur) var(--ease)}
+.hp:active{transform:scale(.92);background:#0e2140}
+.tv{display:flex;align-items:center;gap:8px;background:#040a14e8;border:1px solid #ffffff1f;
+  border-radius:14px;padding:6px 13px;font:800 14px system-ui;
+  box-shadow:0 14px 36px -22px #000, inset 0 1px 0 #ffffff12}
+.tv i{width:11px;height:20px;border-radius:3px;display:block;flex:none;box-shadow:0 0 0 1px #0006}
+.tv b{letter-spacing:.06em;font-size:13px}
+.tv em{font-style:normal;background:#fff;color:#000;border-radius:6px;padding:1px 8px;
+  font-size:16px;min-width:26px;text-align:center;font-variant-numeric:tabular-nums}
+.tv u{text-decoration:none;color:#ffd60a;font-variant-numeric:tabular-nums;
+  font-size:15px;min-width:54px;text-align:center;letter-spacing:.03em}
+.tv small{color:var(--mu);font-size:10.5px;font-weight:700}
+.tv #h-pl{color:#a5f3fc}
+.lv{color:var(--live);font-size:9.5px;font-weight:900;letter-spacing:.12em;
+  display:flex;align-items:center;gap:4px;animation:blink 1.3s infinite}
+
+/* ---------- toast de eventos ---------- */
+#toast{position:fixed;top:30%;left:0;right:0;text-align:center;z-index:26;
+  font:900 clamp(26px,6.5vw,44px) system-ui;color:#fff;pointer-events:none;display:none;
+  text-shadow:0 4px 18px #000, 0 0 44px #22d3ee55;letter-spacing:.02em}
+
+/* ---------- controlos ---------- */
+#ctl{position:fixed;left:0;right:0;bottom:calc(var(--sab) + 14px);z-index:22;
+  display:none;pointer-events:none}
+#js{position:absolute;left:calc(var(--sal) + 18px);bottom:0;width:130px;height:130px;
+  border-radius:50%;background:#ffffff14;border:2px solid #ffffff33;
+  pointer-events:auto;touch-action:none;backdrop-filter:blur(2px)}
+#kn{position:absolute;left:40px;top:40px;width:50px;height:50px;border-radius:50%;
+  background:#fffc;box-shadow:0 6px 16px -6px #0008;transition:transform .05s linear}
+.bt{position:absolute;border-radius:50%;border:2px solid #ffffff4d;color:#fff;
+  font:800 12.5px system-ui;display:flex;align-items:center;justify-content:center;
+  pointer-events:auto;touch-action:none;letter-spacing:.04em;
+  box-shadow:0 10px 24px -12px #000a;transition:transform .07s var(--ease)}
+.bt:active{transform:scale(.92)}
+#bp{right:calc(var(--sar) + 118px);bottom:6px;width:68px;height:68px;background:#22d3ee99}
+#bs{right:calc(var(--sar) + 20px);bottom:14px;width:86px;height:86px;background:#e63946cc}
+#bd{right:calc(var(--sar) + 44px);bottom:112px;width:64px;height:64px;background:#8b5cf6aa}
+#bu{right:calc(var(--sar) + 20px);bottom:196px;width:52px;height:52px;background:#64748bcc;font-size:11px}
+
+/* ---------- overlays (pausa + modal) ---------- */
+.ov{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;
+  background:#02060cd4;backdrop-filter:blur(7px);padding:18px;animation:fade .16s var(--ease)}
+.ov.hidden{display:none}
+.ovc{width:min(400px,90vw);max-height:86vh;overflow-y:auto;
+  background:linear-gradient(180deg,#102546,var(--panel));border:1px solid var(--line2);
+  border-radius:22px;padding:22px 24px;text-align:center;
+  box-shadow:0 44px 100px -50px #000;animation:pop .24s var(--ease)}
+.ovk{font-size:30px;line-height:1;margin-bottom:6px}
+.ovc h2{font-size:17px;letter-spacing:.05em}
+.ovsc{font:900 20px system-ui;margin:12px 0 4px;font-variant-numeric:tabular-nums;
+  display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+.ovsc small{color:var(--mu);font-size:13px}
+.ovc .btn{width:100%;margin-top:9px}
+.hint{color:var(--dim);font-size:11.5px;margin-top:12px;line-height:1.5}
+#md-b{margin-top:8px;font-size:13.5px;color:var(--mu);line-height:1.55}
+#md-b p{margin:5px 0}
+.mdacts{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.mdacts .btn{margin-top:0}

@@ -37,10 +37,15 @@ jobs:
       - name: Smoke test (worker empacotado)
         run: npm run smoke:worker
 
+      - name: Smoke test (jogo NEWEGOISTS — boot, menu e partida)
+        run: npm run smoke:game
+
       - name: Verify dist files
         run: |
           ls -la dist/
           test -f dist/index.html
+          test -f dist/games/newgen-egoists/index.html
+          test -f dist/vendor/three.min.js
 
       - name: Setup Java 21 (Temurin)
         uses: actions/setup-java@v5

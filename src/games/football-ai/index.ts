@@ -124,6 +124,10 @@ const game: GameModule = {
     "Futebol com IA completa:12 engines (percepção, personalidade, emoção, decisão, criatividade, memória, aprendizagem, rivalidade, tática, pathfinding, GR e comportamento) + física de bola. Offline e determinístico.",
   version: "0.1.0",
   author: "NewGen",
+  // Em espera: o jogo principal do launcher é o NEWGEN·NEWEGOISTS.
+  // hidden mantém o módulo IMPORTADO (o Web Worker de simulação continua
+  // empacotado — ver smoke:worker) sem aparecer no menu. Ao reativar: remover.
+  hidden: true,
   mount,
 };
 
