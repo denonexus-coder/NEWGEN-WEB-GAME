@@ -1,0 +1,13 @@
+# dependências
+node_modules/
+
+# builds
+dist/
+dist-server/
+android/
+*.log
+
+# editor/OS
+.DS_Store
+.idea/
+.vscode/

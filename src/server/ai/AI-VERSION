@@ -1,0 +1,5 @@
+source: AI-engine (no-git)
+synced: 2026-11-08T14:48:48.217Z
+hash: sha256:375889e8df6e475c
+files: 31
+engines: 01_perception_engine, 02_personality_engine, 03_emotion_engine, 04_decision_engine, 05_creative_engine, 06_memory_engine, 07_learning_engine, 08_rivalry_engine, 09_tactical_engine, 10_pathfinding_engine, 11_goalkeeper_ai, 12_behavior_execution

@@ -28,6 +28,9 @@ jobs:
       - name: Typecheck
         run: npm run lint
 
+      - name: Server tests (sim, física, determinismo, protocolo)
+        run: npm run test:server
+
       - name: Build web bundle (Vite)
         run: npm run build
 
